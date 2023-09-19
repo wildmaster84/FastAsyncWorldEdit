@@ -173,13 +173,13 @@ public abstract class TaskManager {
     @Deprecated
     public void runUnsafe(Runnable run) {
         QueueHandler queue = Fawe.instance().getQueueHandler();
-        queue.startUnsafe(Fawe.isMainThread());
+        queue.startUnsafe(Fawe.isTickThread());
         try {
             run.run();
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        queue.endUnsafe(Fawe.isMainThread());
+        queue.endUnsafe(Fawe.isTickThread());
     }
 
     /**
