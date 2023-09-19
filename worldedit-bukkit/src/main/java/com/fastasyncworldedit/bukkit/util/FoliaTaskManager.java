@@ -200,21 +200,21 @@ public class FoliaTaskManager extends TaskManager {
                         "execute",
                         ENTITY_EXECUTE_TYPE
                 );
-                // (ES, P, R, R, L)Z (ES, R, R, L)Z
+                // (Entity, Plugin, Runnable, Runnable, Long)Z (Entity, Runnable, Runnable, Long)Z
                 executeForPlayer = insertArguments(executeForPlayer, 1, pluginInstance);
-                // (ES, R1, R2, L)Z -> (ES, R1)Z
+                // (Entity, Runnable, Runnable, Long)Boolean -> (Entity, Runnable1)Boolean
                 executeForPlayer = insertArguments(executeForPlayer, 2, THROW_IF_RETIRED, 0);
-                // (ES, R1)Z -> (ES, R1)V
+                // (Entity, Runnable1)Boolean -> (Entity, Runnable1)boolean
                 executeForPlayer = dropReturn(executeForPlayer);
                 MethodHandle getScheduler = lookup.findVirtual(
                         org.bukkit.entity.Entity.class,
                         "getScheduler",
                         methodType(entitySchedulerClass)
                 );
-                // (ES, R1)V -> (E, R1)V
+                // (Entity, Runnable1)V -> (Entity, Runnable1)V
                 executeForPlayer = filterArguments(executeForPlayer, 0, getScheduler);
                 MethodType finalType = methodType(void.class, org.bukkit.entity.Player.class, Runnable.class);
-                // (ES, R1)V -> (P, R1)V
+                // (Entity, Runnable1)V -> (Player, Runnable1)V
                 executeForPlayer = explicitCastArguments(executeForPlayer, finalType);
             } catch (Throwable throwable) {
                 throw new AssertionError(throwable);
